@@ -1,0 +1,257 @@
+{
+    "swagger": "2.0",
+    "host": "localhost",
+    "tags": [
+        {
+            "name": "user",
+            "description": "Management of users who can login"
+        }
+    ],
+    "info": {
+        "version": "0.0.1",
+        "title": "business-app-skeleton",
+        "description": "This is the API documentation of the basic application skeleton. All UI functionality is done via this API."
+    },
+    "paths": {
+        "/api/users": {
+            "get": {
+                "summary": "Gets a list of all users.",
+                "tags": [
+                    "user"
+                ],
+                "security": [
+                    {
+                        "basic_auth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Request successful.",
+                        "schema": {
+                            "title": "Users",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/User"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized. You are not logged in"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Add a new user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "User to add",
+                        "required": true,
+                        "schema": {
+							"type": "object",
+							"required": [ "name", "pass" ],
+							"properties": {
+								"name": {
+									"type": "string",
+									"description": "Unique username. Must not be already used in database."
+								},
+								"pass": {
+									"type": "string",
+									"description": "Clear text password"
+								}
+							}
+						}
+                    }
+                ],
+                "security": [
+                    {
+                        "basic_auth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns the newly created user with an ID",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "**name** or **pass** not supplied"
+                    },
+                    "401": {
+                        "description": "Unauthorized. You are not logged in"
+                    },
+                    "409": {
+                        "description": "Conflict. Username is already in use"
+                    }
+                }
+            }
+        },
+        "/api/users/{userId}": {
+            "delete": {
+                "summary": "Deletes the user with the given ID",
+                "tags": [
+                    "user"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "userId",
+                        "description": "ID of the user to be deleted",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "basic_auth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No content. Sccessful operation"
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "401": {
+                        "description": "Unauthorized. You are not logged in"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            },
+            "get": {
+                "summary": "Find an user by ID",
+                "tags": [
+                    "user"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "userId",
+                        "description": "ID of the user to be fetched",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "basic_auth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "401": {
+                        "description": "Unauthorized. You are not logged in"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Updates an existing user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "userId",
+                        "description": "ID of the user to be updated",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Userdata to update. Can have any properties which get put into the database.",
+                        "required": true,
+                        "schema": {
+							"type": "object"
+						}
+                    }
+                ],
+                "security": [
+                    {
+                        "basic_auth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns the updated user",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "401": {
+                        "description": "Unauthorized. You are not logged in"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "basic_auth": {
+            "type": "basic"
+        }
+    },
+    "definitions": {
+        "User": {
+            "type": "object",
+			"required": [ "_id", "name", "pass" ],
+			"properties": {
+                "_id": {
+                    "type": "string",
+                    "description": "Unique identifier with 24 characters."
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Username"
+                },
+                "pass": {
+                    "type": "string",
+                    "description": "Hashed password"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "licenseserver",
+  "version": "0.0.1",
+  "description": "Lizenzserver als Node.js Variante mit CouchDB als Datenbank",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ronny Hildebrandt",
+  "license": "ISC",
+  "private": true,
+  "dependencies": {
+    "angular": "^1.5.8",
+    "angular-animate": "^1.5.8",
+    "angular-aria": "^1.5.8",
+    "angular-material": "^1.1.1",
+    "basic-auth": "^1.0.4",
+    "bcryptjs": "^2.3.0",
+    "body-parser": "^1.15.2",
+    "compression": "^1.6.2",
+    "express": "^4.14.0",
+    "fs": "0.0.1-security",
+    "https": "^1.0.0",
+    "monk": "^3.1.2"
+  }
+}
